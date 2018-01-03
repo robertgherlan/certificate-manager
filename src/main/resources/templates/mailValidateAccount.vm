@@ -1,0 +1,13 @@
+
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<div class="row">
+		<ul>
+			<li>Your username:  <b>${username}</b></li>
+			<li>Your password:  <b>${password}</b></li>
+		</ul>
+		
+		<a class="btn btn-primary btn-lg" href="${linkToValidate}">Press here to validate your account</a>
+	</div>
+
+

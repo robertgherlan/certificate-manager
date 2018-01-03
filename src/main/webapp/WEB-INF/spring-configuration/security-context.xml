@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+	<security:global-method-security
+		pre-post-annotations="enabled" secured-annotations="enabled" />
+	<security:http auto-config="true" use-expressions="true">
+		<security:intercept-url pattern="/"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/login"
+			access="permitAll" />
+		<security:intercept-url pattern="/recover**"
+			access="permitAll()" />
+		<security:intercept-url pattern="/recoverPassword**"
+			access="permitAll()" />
+		<security:intercept-url pattern="/validateAccount**"
+			access="permitAll()" />
+		<security:intercept-url pattern="/resources**"
+			access="permitAll" />
+		<security:intercept-url pattern="/home**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/certificates**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/sign_document**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/generate_certificate**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/import_certificate**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/upload_certificate**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/signature_verification_by_user**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/signature_verification_by_signature**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/404**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/503**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/logout"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/users/**"
+			access="isAuthenticated() and hasAuthority('ADMIN')" />
+		<security:intercept-url pattern="/users**"
+			access="isAuthenticated() and hasAuthority('ADMIN')" />
+		<security:intercept-url pattern="/retrieve_certificates**"
+			access="isAuthenticated()" />
+		<security:form-login login-page="/login"
+			authentication-failure-url="/login?error=true" password-parameter="password"
+			username-parameter="username" login-processing-url="/login_spring_security"
+			default-target-url="/home" always-use-default-target="true" />
+		<security:logout logout-url="/logout"
+			invalidate-session="true" delete-cookies="JSESSIONID,remember_me"
+			logout-success-url="/login?logout=true" />
+		<security:csrf />
+		<security:remember-me use-secure-cookie="false"
+			remember-me-parameter="remember_me"
+			key="eTLDmHISnXtALQThmwe2TNDxoKB9SUgpm97krH8mR5AaGpA6Urnc6MkoI9mqFPpuHVztrsqziN7wKNTRNSRbN8a2sGf39Mn5NfmCWFtOYaogI3z2DXIJwb7DvRcwo58X"
+			token-validity-seconds="604800" />
+	</security:http>
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:password-encoder hash="bcrypt" />
+			<security:jdbc-user-service
+				data-source-ref="dbSource"
+				authorities-by-username-query="select user.username, role.name from user 
+		join user_role on user.id = user_role.users_id join role on user_role.roles_id 
+		= role.id where user.username = ?"
+				users-by-username-query="select user.username, 
+		user.password, user.enabled, user.validEmail from user where username = ?" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans:beans>

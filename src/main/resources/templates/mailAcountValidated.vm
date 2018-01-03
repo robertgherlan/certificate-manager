@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+
+	<body>
+		<b>Your email was successfully validated.</b><br/>
+		Please wait until your account will be validate by an administrator.<br/>
+	</body>
+</html>
+
