@@ -90,7 +90,7 @@ public class UserController extends BaseController {
 				String email = user.getEmail();
 				String registerToken = user.getRegisterToken();
 				if (email != null && registerToken != null) {
-
+					//TODO:Implement this.
 				}
 			}
 		} catch (Exception e) {

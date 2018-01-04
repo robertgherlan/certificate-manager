@@ -105,7 +105,8 @@
 												<th>User</th>
 												<th>Signature</th>
 												<th>Certificate id</th>
-												<th>Download</th>
+												<th>Signature</th>
+												<th>Document</th>
 											</tr>
 											<c:forEach items="${documents.content}" var="document">
 												<tr>
@@ -126,6 +127,9 @@
 																value="${document.signature.id}" />
 															<button type="submit" class="btn btn-primary">Signature</button>
 														</form>
+
+													</td>
+													<td>
 														<form method="POST"
 															action="${app}/documents/download_document">
 															<input type="hidden" name="${_csrf.parameterName}"

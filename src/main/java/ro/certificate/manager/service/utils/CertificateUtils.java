@@ -947,7 +947,7 @@ public class CertificateUtils {
 		if (certificateAlias == null) {
 			throw new Exception(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
 		}
-		String privateKeyPassword = aesUtils.decryptPrivateKeyPassword(foundedKeystore.getKeyStorePassword());
+		String privateKeyPassword = aesUtils.decryptPrivateKeyPassword(foundedKeystore.getPrivateKeyPassword());
 		Key key = keyStore.getKey(certificateAlias, privateKeyPassword.toCharArray());
 
 		return key;

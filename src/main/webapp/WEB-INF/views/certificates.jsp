@@ -134,7 +134,8 @@
 												<th>Creation date</th>
 												<th>Public key</th>
 												<th>Private key</th>
-												<th>Actions</th>
+												<th>Details</th>
+												<th>Generate CSR</th>
 											</tr>
 											<c:forEach items="${keystores}" var="keyStore">
 												<tr>
@@ -158,26 +159,15 @@
 																private key</button>
 														</form>
 													</td>
-													<td>
-														<div class="btn-group">
-															<a class="btn btn-default"
-																href="${app}/certificate_details/${keyStore.id}"><i
-																class="fa fa-eye"></i> View details</a>
-
-															<form method="POST"
-																action="${app}/generate_csr/${keyStore.id}">
-																<input type="hidden" name="${_csrf.parameterName}"
-																	value="${_csrf.token}" />
-																<button type="submit" class="btn btn-default">Generate
-																	CSR</button>
-															</form>
-														</div> <!-- 
-															<button type="button"
-																class="btn btn-danger delete-keyStore"
-																id="${keyStore.id}">
-																<i class="fa fa-remove"></i> Delete
-															</button> -->
-													</td>
+													<td><a class="btn btn-default"
+														href="${app}/certificate_details/${keyStore.id}"><i
+															class="fa fa-eye"></i>View</a></td>
+													<td><form method="POST"
+															action="${app}/generate_csr/${keyStore.id}">
+															<input type="hidden" name="${_csrf.parameterName}"
+																value="${_csrf.token}" />
+															<button type="submit" class="btn btn-default">Generate</button>
+														</form></td>
 												</tr>
 											</c:forEach>
 										</tbody>
