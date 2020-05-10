@@ -13,6 +13,7 @@ import ro.certificate.manager.entity.Role;
 import ro.certificate.manager.entity.User;
 import ro.certificate.manager.exceptions.ReCaptchaInvalidException;
 import ro.certificate.manager.exceptions.ReCaptchaUnavailableException;
+import ro.certificate.manager.utils.RequestUtils;
 import ro.certificate.manager.utils.StringGeneratorUtils;
 import ro.certificate.manager.wrapper.UserRegistrationForm;
 
@@ -64,7 +65,7 @@ public class RegisterController extends BaseController {
             user.setRegisterToken(registerToken);
             user.setPassword(passwordEncoder.encode(plainPassword));
             user.setEmail(registerUser.getEmail());
-            user.setRegisterIpAddress(requestUtils.getIPAddress(request));
+            user.setRegisterIpAddress(RequestUtils.getIPAddress(request));
             user.setUsername(registerUser.getUsername());
             user.setFirstname(registerUser.getFirstName());
             user.setLastname(registerUser.getLastName());

@@ -15,7 +15,7 @@ import java.util.List;
 public class CertificateRetrieverController extends BaseController {
 
     @RequestMapping(value = "/retrieve_certificates", method = RequestMethod.GET)
-    public String retrieve_certificates(Model model) {
+    public String retrieve_certificates() {
         return "/retrieve_certificates";
     }
 

@@ -13,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ro.certificate.manager.exceptions.InternalServerError;
 import ro.certificate.manager.exceptions.UserNotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
-
 @ControllerAdvice
 public class AppplicationExceptionHandler {
 

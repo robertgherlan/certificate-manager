@@ -2,7 +2,6 @@ package ro.certificate.manager.service.utils;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 import ro.certificate.manager.exceptions.FileAlreadyExistException;
 import ro.certificate.manager.exceptions.InternalServerError;
 import ro.certificate.manager.utils.ErrorMessageBundle;

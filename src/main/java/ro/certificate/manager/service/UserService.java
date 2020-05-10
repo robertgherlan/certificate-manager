@@ -63,15 +63,12 @@ public class UserService {
     }
 
     public Page<User> searchUser(String query, Integer pageNumber, Integer perPage, String sortDirection, String sortBy) {
-        Page<User> users;
         PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
         if (query != null && query.trim().length() > 0) {
-            users = findByUsernameOrEmailOrFirstnameOrLastnameAllIgnoreCaseContaining(query.trim(), pageRequest);
+            return findByUsernameOrEmailOrFirstnameOrLastnameAllIgnoreCaseContaining(query.trim(), pageRequest);
         } else {
-            users = findAll(pageRequest);
+            return findAll(pageRequest);
         }
-
-        return users;
     }
 
     public User findByRegisterToken(String registerToken) {

@@ -178,7 +178,7 @@ public class CertificateController extends BaseController {
             User user = userService.findByUsername(principal.getName());
             Keystore foundKeystore = keystoreService.findByUserAndCertificateID(user, certificateID);
             if (foundKeystore != null) {
-                InputStream inputStream = certificateGeneratorUtils.export_privateKey(foundKeystore, user, asPEM);
+                InputStream inputStream = certificateGeneratorUtils.exportPrivateKey(foundKeystore, user, asPEM);
                 FileUtils.downloadFile(response, inputStream, foundKeystore.getCertificateSubject() + ".key");
             }
         } catch (Exception e) {

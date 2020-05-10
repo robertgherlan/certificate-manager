@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigurationUtils {
 
-	private String keyStoreEncryptionKey = "q6hB54B7D6cj4bt4";
+	private final String keyStoreEncryptionKey = "q6hB54B7D6cj4bt4";
 
-	private String privateKeyEncryptionKey = "Kpj5mBuABDBcR7Z5";
+	private final String privateKeyEncryptionKey = "Kpj5mBuABDBcR7Z5";
 
-	private String certificateIDEncryptionKey = "ubwBjLO8qgdRwZh0";
+	private final String certificateIDEncryptionKey = "ubwBjLO8qgdRwZh0";
 
 	@Value("${userFiles.folder}")
 	private String userFilesFolder;
 
 	@Value("use.secure.random")
-	private String useSecureRandom = "false";
+	private final String useSecureRandom = "false";
 
 	@Value("${captcha.siteKey}")
 	private String captchaSiteKey;
@@ -39,17 +39,11 @@ public class ConfigurationUtils {
 	@Value("${email.title}")
 	private String emailTitle;
 
-	@Value("${users.perPage:25}")
-	private Integer usersPerPage = 25;
-
 	@Value("${attempts.maxAttempts}")
 	private Integer maxAttempts;
 
 	@Value("${attempts.interval}")
 	private Integer attemptsInterval;
-
-	@Value("${users.perPage:25}")
-	private Integer defaultUsersPerPage = 25;
 
 	public String getCaptchaSiteKey() {
 		return captchaSiteKey;
@@ -79,10 +73,6 @@ public class ConfigurationUtils {
 		return emailTitle;
 	}
 
-	public Integer getUsersPerPage() {
-		return usersPerPage;
-	}
-
 	public String getUserFilesFolder() {
 		return userFilesFolder;
 	}
@@ -101,10 +91,6 @@ public class ConfigurationUtils {
 
 	public Integer getAttemptsInterval() {
 		return attemptsInterval;
-	}
-
-	public Integer getDefaultUsersPerPage() {
-		return defaultUsersPerPage;
 	}
 
 	public String getPrivateKeyEncryptionKey() {

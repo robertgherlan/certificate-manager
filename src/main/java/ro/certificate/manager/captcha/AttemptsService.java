@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class AttemptsService {
 
-    private LoadingCache<String, Integer> attemptsCache;
+    private final LoadingCache<String, Integer> attemptsCache;
 
     public AttemptsService() {
         super();

@@ -14,7 +14,7 @@ public class AESUtils {
     @Autowired
     private ConfigurationUtils configurationUtils;
 
-    private static final String ALGORITHM = "AES";
+    private static final String AES_ALGORITHM_NAME = "AES";
 
     public String encryptKeyStorePassword(String data) throws Exception {
         return encrypt(data, configurationUtils.getKeyStoreEncryptionKey());
@@ -40,12 +40,12 @@ public class AESUtils {
         return decrypt(encryptedData, configurationUtils.getCertificateIDEncryptionKey());
     }
 
-    private String encrypt(String data, String encriptionKey) throws Exception {
-        if (data != null && encriptionKey != null) {
-            Key key = generateKey(encriptionKey);
-            Cipher c = Cipher.getInstance(ALGORITHM);
-            c.init(Cipher.ENCRYPT_MODE, key);
-            byte[] encVal = c.doFinal(data.getBytes());
+    private String encrypt(String data, String encryptionKey) throws Exception {
+        if (data != null && encryptionKey != null) {
+            Key key = generateKey(encryptionKey);
+            Cipher cipher = Cipher.getInstance(AES_ALGORITHM_NAME);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            byte[] encVal = cipher.doFinal(data.getBytes());
             return Base64.getEncoder().encodeToString(encVal);
         }
 
@@ -55,10 +55,10 @@ public class AESUtils {
     private String decrypt(String encryptedData, String encryptionKey) throws Exception {
         if (encryptedData != null && encryptionKey != null) {
             Key key = generateKey(encryptionKey);
-            Cipher c = Cipher.getInstance(ALGORITHM);
-            c.init(Cipher.DECRYPT_MODE, key);
+            Cipher cipher = Cipher.getInstance(AES_ALGORITHM_NAME);
+            cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] decodedValue = Base64.getDecoder().decode(encryptedData);
-            byte[] decValue = c.doFinal(decodedValue);
+            byte[] decValue = cipher.doFinal(decodedValue);
             return new String(decValue);
         }
 
@@ -66,6 +66,6 @@ public class AESUtils {
     }
 
     private Key generateKey(String encryptionKey) {
-        return new SecretKeySpec(encryptionKey.getBytes(), ALGORITHM);
+        return new SecretKeySpec(encryptionKey.getBytes(), AES_ALGORITHM_NAME);
     }
 }

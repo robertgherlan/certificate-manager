@@ -179,7 +179,7 @@ public class CertificateUtils {
      * @return extracted private key if is found, null otherwise.
      * @throws Exception If a error occurs.
      */
-    private PrivateKey extractPrivateKey(String privateKeyPEM, byte[] privateKeyDERStream) throws Exception {
+    private static PrivateKey extractPrivateKey(String privateKeyPEM, byte[] privateKeyDERStream) throws Exception {
         PEMParser parser = null;
         PrivateKey privateKey;
         try {
@@ -222,7 +222,7 @@ public class CertificateUtils {
     }
 
 
-    private PrivateKey objectToPrivateKey(Object object) throws Exception {
+    private static PrivateKey objectToPrivateKey(Object object) throws Exception {
         PrivateKey privateKey = null;
         if (object instanceof PrivateKeyInfo) {
             PrivateKeyInfo privateKeyInfo = (PrivateKeyInfo) object;
@@ -245,7 +245,7 @@ public class CertificateUtils {
     }
 
 
-    private java.security.cert.Certificate[] extractCertificates(String certificatePEM, byte[] certificateDER) throws Exception {
+    private static java.security.cert.Certificate[] extractCertificates(String certificatePEM, byte[] certificateDER) throws Exception {
         java.security.cert.Certificate[] chain;
         try (InputStream inputStream = getInputStream(certificatePEM, certificateDER)) {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -268,15 +268,12 @@ public class CertificateUtils {
         }
     }
 
-    private InputStream getInputStream(String certificatePEM, byte[] certificateDER) {
-        InputStream inputStream;
+    private static InputStream getInputStream(String certificatePEM, byte[] certificateDER) {
         if (certificatePEM != null) {
-            inputStream = new ByteArrayInputStream(certificatePEM.getBytes());
-        } else {
-            inputStream = new ByteArrayInputStream(certificateDER);
+            return new ByteArrayInputStream(certificatePEM.getBytes());
         }
 
-        return inputStream;
+        return new ByteArrayInputStream(certificateDER);
     }
 
 
@@ -319,7 +316,7 @@ public class CertificateUtils {
      * @param certificateValidityType Represent the type of validity and values can be: year, month or day.
      * @return expired date for a certificate.
      */
-    private Date calculateNotAfter(int certificateValidity, String certificateValidityType) {
+    private static Date calculateNotAfter(int certificateValidity, String certificateValidityType) {
         Calendar calendar = Calendar.getInstance();
         if (certificateValidityType.toUpperCase().equals("YEARS")) {
             calendar.add(Calendar.YEAR, certificateValidity);
@@ -341,39 +338,38 @@ public class CertificateUtils {
      * @param certificate The certificate parameters such as OU, O etc.
      * @return a object formed by given parameters.
      */
-    private X500Name getX500Name(Certificate certificate) {
+    private static X500Name getX500Name(Certificate certificate) {
         X500NameBuilder nameBuilder = new X500NameBuilder(BCStyle.INSTANCE);
-        // I don't made test if common name is null because this field is
-        // mandatory.
+        // I don't made test if common name is null because this field is mandatory.
         nameBuilder.addRDN(BCStyle.CN, certificate.getCommonName());
 
         String organizationUnit = certificate.getOrganizationUnit();
-        if (organizationUnit != null && organizationUnit.trim().length() > 0) {
+        if (organizationUnit != null && !organizationUnit.trim().isEmpty()) {
             nameBuilder.addRDN(BCStyle.OU, organizationUnit);
         }
 
         String organization = certificate.getOrganization();
-        if (organization != null && organization.trim().length() > 0) {
+        if (organization != null && !organization.trim().isEmpty()) {
             nameBuilder.addRDN(BCStyle.O, organization);
         }
 
         String locality = certificate.getLocality();
-        if (locality != null && locality.trim().length() > 0) {
+        if (locality != null && !locality.trim().isEmpty()) {
             nameBuilder.addRDN(BCStyle.L, locality);
         }
 
         String state = certificate.getState();
-        if (state != null && state.trim().length() > 0) {
+        if (state != null && !state.trim().isEmpty()) {
             nameBuilder.addRDN(BCStyle.ST, state);
         }
 
         String country = certificate.getCountry();
-        if (country != null && country.trim().length() > 0) {
+        if (country != null && !country.trim().isEmpty()) {
             nameBuilder.addRDN(BCStyle.C, country);
         }
 
         String email = certificate.getEmail();
-        if (email != null && email.trim().length() > 0) {
+        if (email != null && !email.trim().isEmpty()) {
             nameBuilder.addRDN(BCStyle.E, email);
         }
 
@@ -505,13 +501,13 @@ public class CertificateUtils {
         return subjectDnString;
     }
 
-    private KeyStore loadKeyStoreFromDisk(String keyStoreFullPath, String keyStorePassword) throws Exception {
+    private static KeyStore loadKeyStoreFromDisk(String keyStoreFullPath, String keyStorePassword) throws Exception {
         try (InputStream inputStream = new BufferedInputStream(new FileInputStream(keyStoreFullPath))) {
             return loadKeyStore(inputStream, keyStorePassword);
         }
     }
 
-    private KeyStore loadKeyStore(InputStream inputStream, String keyStorePassword) throws Exception {
+    private static KeyStore loadKeyStore(InputStream inputStream, String keyStorePassword) throws Exception {
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
         keyStore.load(inputStream, keyStorePassword.toCharArray());
 
@@ -537,7 +533,7 @@ public class CertificateUtils {
         return size;
     }
 
-    private InputStream generateCSR(java.security.cert.Certificate certificate, Key key) throws Exception {
+    private static InputStream generateCSR(java.security.cert.Certificate certificate, Key key) throws Exception {
         StringWriter stringWriter = new StringWriter();
         try (JcaPEMWriter jcaPEMWriter = new JcaPEMWriter(stringWriter)) {
             if (certificate instanceof X509Certificate) {
@@ -614,7 +610,7 @@ public class CertificateUtils {
         return new ByteArrayInputStream(getPemValue(certificate).getBytes());
     }
 
-    public InputStream export_privateKey(Keystore foundedKeystore, User user, Boolean asPEM) throws Exception {
+    public InputStream exportPrivateKey(Keystore foundedKeystore, User user, Boolean asPEM) throws Exception {
         Key key = getPrivateKey(foundedKeystore, user);
         if (asPEM != null && asPEM) {
             return new ByteArrayInputStream(getPemValue(key).getBytes());
@@ -642,7 +638,7 @@ public class CertificateUtils {
 
     public void uploadCertificate(MultipartFile certificate, MultipartFile privateKey, User user) throws Exception {
         if (certificate.isEmpty() && privateKey.isEmpty()) {
-            throw new Exception("You must provide both files.");
+            throw new Exception("Both files are required.");
         }
 
         importCertificate(user, null, null, certificate.getBytes(), privateKey.getBytes());
@@ -652,7 +648,7 @@ public class CertificateUtils {
 
     }
 
-    public byte[] signDocument(byte[] documentToSign, PrivateKey privateKey, String algorithm) throws Exception {
+    public static byte[] signDocument(byte[] documentToSign, PrivateKey privateKey, String algorithm) throws Exception {
         Signature signature = Signature.getInstance(algorithm);
         signature.initSign(privateKey);
         signature.update(documentToSign);
@@ -660,7 +656,7 @@ public class CertificateUtils {
         return signature.sign();
     }
 
-    public boolean verifyDocumentSignature(byte[] signatureData, byte[] documentData, java.security.cert.Certificate certificate) throws Exception {
+    public static boolean verifyDocumentSignature(byte[] signatureData, byte[] documentData, java.security.cert.Certificate certificate) throws Exception {
         Signature signature = Signature.getInstance(((X509Certificate) certificate).getSigAlgName());
         signature.initVerify(certificate.getPublicKey());
         signature.update(documentData);
@@ -693,7 +689,7 @@ public class CertificateUtils {
         return extractCertificateFromKeystore(keyStore);
     }
 
-    public String getAlias(KeyStore keyStore) throws KeyStoreException {
+    public static String getAlias(KeyStore keyStore) throws KeyStoreException {
         Enumeration<String> aliases = keyStore.aliases();
         if (aliases == null || !aliases.hasMoreElements()) {
             throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
@@ -706,7 +702,7 @@ public class CertificateUtils {
         return certificateAlias;
     }
 
-    public java.security.cert.Certificate extractCertificateFromKeystore(KeyStore keyStore) throws KeyStoreException {
+    public static java.security.cert.Certificate extractCertificateFromKeystore(KeyStore keyStore) throws KeyStoreException {
         String alias = getAlias(keyStore);
         java.security.cert.Certificate certificate = keyStore.getCertificate(alias);
         if (certificate == null) {

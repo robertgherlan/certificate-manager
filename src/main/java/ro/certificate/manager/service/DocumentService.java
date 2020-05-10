@@ -18,6 +18,7 @@ import ro.certificate.manager.service.utils.*;
 import ro.certificate.manager.utils.ErrorMessageBundle;
 import ro.certificate.manager.utils.PaginationUtils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -66,40 +67,28 @@ public class DocumentService {
         return documentRepository.saveAndFlush(document);
     }
 
-    public Document findByUserAndDocumentID(User user, String documentID) {
-        if (ValidationUtils.validateUUID(documentID)) {
-            Document document = documentRepository.findByUserAndId(user, documentID);
-            if (document == null) {
-                throw new NotFoundException(ErrorMessageBundle.DOCUMENT_NOT_FOUND);
-            }
-        }
-        throw new NotFoundException(ErrorMessageBundle.DOCUMENT_NOT_FOUND);
-    }
-
     public Page<Document> findByUser(String userName, Integer pageNumber, Integer perPage, String sortDirection, String sortBy) {
-        Page<Document> documents = null;
         try {
             User user = userService.findByUsername(userName);
             PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
-            documents = documentRepository.findByUser(pageRequest, user);
+            return documentRepository.findByUser(pageRequest, user);
         } catch (Exception e) {
             logger.error(e);
         }
 
-        return documents;
+        return null;
     }
 
     public Page<Document> searchByNameAndUser(String query, String userName, Integer pageNumber, Integer perPage, String sortDirection, String sortBy) {
-        Page<Document> documents = null;
         try {
             User user = userService.findByUsername(userName);
             PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
-            documents = documentRepository.findByUserAndNameIgnoreCaseContaining(pageRequest, user, query);
+            return documentRepository.findByUserAndNameIgnoreCaseContaining(pageRequest, user, query);
         } catch (Exception e) {
             logger.error(e);
         }
 
-        return documents;
+        return null;
     }
 
     public Page<Document> searchByName(String query, Integer pageNumber, Integer perPage, String sortDirection, String sortBy) {
@@ -121,12 +110,12 @@ public class DocumentService {
         String originalFileName = documentToSign.getOriginalFilename();
         String documentPath = documentUtils.saveDocumentOnDisk(documentToSign, userID);
         KeyStore keyStore = certificateUtils.getKeyStore(keystore, user);
-        java.security.cert.Certificate certificate = certificateUtils.extractCertificateFromKeystore(keyStore);
+        java.security.cert.Certificate certificate = CertificateUtils.extractCertificateFromKeystore(keyStore);
         Key key = certificateUtils.extractPrivateKey(keyStore, keystore.getPrivateKeyPassword());
         if (!(key instanceof PrivateKey)) {
             throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
         }
-        byte[] generatedSignature = certificateUtils.signDocument(documentToSign.getBytes(), (PrivateKey) key, ((X509Certificate) certificate).getSigAlgName());
+        byte[] generatedSignature = CertificateUtils.signDocument(documentToSign.getBytes(), (PrivateKey) key, ((X509Certificate) certificate).getSigAlgName());
         String signatureFileName = signatureUtils.saveSignature(generatedSignature, originalFileName, userID, keyStoreID);
 
         Date currentDate = new Date();
@@ -184,7 +173,7 @@ public class DocumentService {
             File userDocumentsFolder = folderUtils.getDocumentsFolderFile(userId);
             File documentFile = new File(userDocumentsFolder, path);
             FileUtils.checkIfNotExist(documentFile);
-            return new FileInputStream(documentFile);
+            return new BufferedInputStream(new FileInputStream(documentFile));
         }
         throw new NotFoundException(ErrorMessageBundle.DOCUMENT_NOT_FOUND);
     }

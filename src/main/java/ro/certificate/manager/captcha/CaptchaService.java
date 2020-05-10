@@ -22,20 +22,17 @@ public class CaptchaService {
     private HttpServletRequest request;
 
     @Autowired
-    private RequestUtils requestUtils;
-
-    @Autowired
     private ConfigurationUtils configurationUtils;
 
     @Autowired
     private AttemptsService attemptService;
 
-    private RestOperations restTemplate = new RestTemplate();
+    private final RestOperations restTemplate = new RestTemplate();
 
     private static final Pattern RESPONSE_PATTERN = Pattern.compile("[A-Za-z0-9_-]+");
 
     public void processResponse(final String response) {
-        if (attemptService.isBlocked(requestUtils.getClientIP(request))) {
+        if (attemptService.isBlocked(RequestUtils.getClientIP(request))) {
             throw new ReCaptchaInvalidException("Client exceeded maximum number of failed attempts");
         }
 
@@ -43,21 +40,19 @@ public class CaptchaService {
             throw new ReCaptchaInvalidException("Response contains invalid characters");
         }
 
-        final URI verifyUri = URI.create(
-                String.format("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s&remoteip=%s", configurationUtils.getCaptchaSecretKey(), response, requestUtils.getClientIP(request)));
+        final URI verifyUri = URI.create(String.format("https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s&remoteip=%s", configurationUtils.getCaptchaSecretKey(), response, RequestUtils.getClientIP(request)));
         try {
             final GoogleResponse googleResponse = restTemplate.getForObject(verifyUri, GoogleResponse.class);
-
             if (!googleResponse.isSuccess()) {
                 if (googleResponse.hasClientError()) {
-                    attemptService.reCaptchaFailed(requestUtils.getClientIP(request));
+                    attemptService.reCaptchaFailed(RequestUtils.getClientIP(request));
                 }
                 throw new ReCaptchaInvalidException("reCaptcha was not successfully validated");
             }
         } catch (RestClientException rce) {
             throw new ReCaptchaUnavailableException("Registration unavailable at this time.  Please try again later.", rce);
         }
-        attemptService.reCaptchaSucceeded(requestUtils.getClientIP(request));
+        attemptService.reCaptchaSucceeded(RequestUtils.getClientIP(request));
     }
 
     private boolean responseSanityCheck(final String response) {
