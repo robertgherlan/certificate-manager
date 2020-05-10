@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ErrorController {
 
-	@RequestMapping(value = "/404", method = RequestMethod.GET)
-	public String error_404(Model model) throws Exception {
-		return "/404";
-	}
+    @RequestMapping(value = "/404", method = RequestMethod.GET)
+    public String error_404() {
+        return "/404";
+    }
 
-	@RequestMapping(value = "/503", method = RequestMethod.GET)
-	public String error_503(Model model) throws Exception {
-		return "/503";
-	}
+    @RequestMapping(value = "/503", method = RequestMethod.GET)
+    public String error_503() {
+        return "/503";
+    }
 }

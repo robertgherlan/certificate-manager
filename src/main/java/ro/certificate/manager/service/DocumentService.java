@@ -92,15 +92,14 @@ public class DocumentService {
     }
 
     public Page<Document> searchByName(String query, Integer pageNumber, Integer perPage, String sortDirection, String sortBy) {
-        Page<Document> documents = null;
         try {
             PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
-            documents = documentRepository.findByNameIgnoreCaseContaining(pageRequest, query);
+            return documentRepository.findByNameIgnoreCaseContaining(pageRequest, query);
         } catch (Exception e) {
             logger.error(e);
         }
 
-        return documents;
+        return null;
     }
 
     public void signDocument(String userName, MultipartFile documentToSign, String keyStoreID, RedirectAttributes redirectAttributes) throws Exception {

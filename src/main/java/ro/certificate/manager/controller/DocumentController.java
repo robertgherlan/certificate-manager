@@ -55,7 +55,6 @@ public class DocumentController extends BaseController {
 
         Page<Document> myDocuments = documentService.findByUser(principal.getName(), pageNumber, perPage, sortDirection, sortBy);
         return getDocumentsPage(myDocuments, model);
-
     }
 
     @RequestMapping(value = "/my_documents/search", method = RequestMethod.GET)

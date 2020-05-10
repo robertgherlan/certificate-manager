@@ -13,8 +13,7 @@ public class AttemptsService {
     private final LoadingCache<String, Integer> attemptsCache;
 
     public AttemptsService() {
-        super();
-        attemptsCache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build(new CacheLoader<String, Integer>() {
+        this.attemptsCache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build(new CacheLoader<String, Integer>() {
             @Override
             public Integer load(final String key) {
                 return 0;
@@ -22,14 +21,13 @@ public class AttemptsService {
         });
     }
 
-    public void reCaptchaSucceeded(final String key) {
+    public void reCaptchaSucceeded(String key) {
         attemptsCache.invalidate(key);
     }
 
-    public void reCaptchaFailed(final String key) {
+    public void reCaptchaFailed(String key) {
         int attempts = attemptsCache.getUnchecked(key);
-        attempts++;
-        attemptsCache.put(key, attempts);
+        attemptsCache.put(key, attempts + 1);
     }
 
     public boolean isBlocked(final String key) {

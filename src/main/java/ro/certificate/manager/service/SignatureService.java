@@ -67,13 +67,12 @@ public class SignatureService {
     }
 
     public boolean verifySignatureByUser(MultipartFile signedDocument, String userID) {
-        boolean success = false;
         try {
             User user = userService.findOne(userID);
-            success = certificateUtils.verifySignatureByUser(signedDocument, user);
+            return certificateUtils.verifySignatureByUser(signedDocument, user);
         } catch (Exception e) {
             // Stay silent.
         }
-        return success;
+        return false;
     }
 }

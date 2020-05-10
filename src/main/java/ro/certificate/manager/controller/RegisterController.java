@@ -27,9 +27,9 @@ import java.util.List;
 @Controller
 public class RegisterController extends BaseController {
 
-    private static final String REGISTER_PAGE = "/register";
-
     private static final Logger logger = Logger.getLogger(RegisterController.class);
+
+    private static final String REGISTER_PAGE = "/register";
 
     @RequestMapping(value = REGISTER_PAGE, method = RequestMethod.GET)
     public String addUserPage(Model model) {

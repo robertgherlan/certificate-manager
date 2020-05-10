@@ -19,6 +19,7 @@ public class RoleService {
 		if (roleRepository.countByName(role.getName()) != 0) {
 			return null;
 		}
+
 		return roleRepository.saveAndFlush(role);
 	}
 

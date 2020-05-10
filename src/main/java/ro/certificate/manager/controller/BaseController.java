@@ -60,7 +60,7 @@ public class BaseController {
     @Autowired
     protected ConfigurationUtils configurationUtils;
 
-    protected BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12, SecureRandomUtils.getSecureRandom());
+    protected final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12, SecureRandomUtils.getSecureRandom());
 
     public String getMessage(String key, Object[] args, Locale locale) {
         return messageSource.getMessage(key, args, locale);

@@ -13,12 +13,11 @@ import java.io.InputStream;
 
 public class FileUtils {
 
-    private FileUtils() {
-    }
-
     private static final Logger logger = Logger.getLogger(FileUtils.class);
 
-
+    private FileUtils() {
+    }
+    
     public static void checkIfExist(File file) throws Exception {
         if (file.exists() && file.isFile()) {
             throw new FileAlreadyExistException(ErrorMessageBundle.FILE_ALREADY_EXIST);

@@ -16,46 +16,42 @@ import java.util.List;
 @Transactional
 public class KeystoreService {
 
-	@Autowired
-	private KeystoreRepository keystoreRepository;
+    @Autowired
+    private KeystoreRepository keystoreRepository;
 
-	public List<Keystore> findAll() {
-		return keystoreRepository.findAll();
-	}
+    public Keystore save(Keystore keystore) {
+        return keystoreRepository.saveAndFlush(keystore);
+    }
 
-	public Keystore save(Keystore keystore) {
-		return keystoreRepository.saveAndFlush(keystore);
-	}
+    public List<Keystore> findByUser(User user) {
+        return keystoreRepository.findByUser(user);
+    }
 
-	public List<Keystore> findByUser(User user) {
-		return keystoreRepository.findByUser(user);
-	}
+    public Keystore findByUserAndCertificateID(User user, String keyStoreID) {
+        if (ValidationUtils.validateUUID(keyStoreID)) {
+            Keystore keystore = keystoreRepository.findByUserAndId(user, keyStoreID);
+            if (keystore == null) {
+                throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
+            }
+            return keystore;
+        }
 
-	public Keystore findByUserAndCertificateID(User user, String keyStoreID) {
-		if (ValidationUtils.validateUUID(keyStoreID)) {
-			Keystore keystore = keystoreRepository.findByUserAndId(user, keyStoreID);
-			if (keystore == null) {
-				throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
-			}
-			return keystore;
-		}
+        throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
+    }
 
-		throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
-	}
+    public List<Keystore> findByUserAndCertificateSubjectContainingIgnoreCase(User user, String query) {
+        return keystoreRepository.findByUserAndCertificateSubjectContainingIgnoreCase(user, query);
+    }
 
-	public List<Keystore> findByUserAndCertificateSubjectContainingIgnoreCase(User user, String query) {
-		return keystoreRepository.findByUserAndCertificateSubjectContainingIgnoreCase(user, query);
-	}
+    public Keystore findById(String id) {
+        if (ValidationUtils.validateUUID(id)) {
+            Keystore keystore = keystoreRepository.findOne(id);
+            if (keystore == null) {
+                throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
+            }
 
-	public Keystore findById(String id) {
-		if (ValidationUtils.validateUUID(id)) {
-			Keystore keystore = keystoreRepository.findOne(id);
-			if (keystore == null) {
-				throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
-			}
-
-			return keystore;
-		}
-		throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
-	}
+            return keystore;
+        }
+        throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
+    }
 }

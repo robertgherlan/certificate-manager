@@ -26,11 +26,16 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
+    public User saveAndFlush(User user) {
+        return userRepository.saveAndFlush(user);
+    }
+
     public List<User> findAll() throws Exception {
         List<User> allUsers = userRepository.findAll();
         if (allUsers == null || allUsers.isEmpty()) {
             throw new UserNotFoundException(ErrorMessageBundle.USER_NOT_FOUND);
         }
+
         return allUsers;
     }
 
@@ -42,6 +47,7 @@ public class UserService {
             }
             return userFromDatabase;
         }
+
         throw new UserNotFoundException(ErrorMessageBundle.USER_NOT_FOUND);
     }
 
@@ -69,10 +75,6 @@ public class UserService {
         } else {
             return findAll(pageRequest);
         }
-    }
-
-    public User findByRegisterToken(String registerToken) {
-        return userRepository.findByRegisterToken(registerToken);
     }
 
     public void deleteById(String id) {
@@ -142,9 +144,5 @@ public class UserService {
                 userRepository.save(user);
             }
         }
-    }
-
-    public User saveAndFlush(User user) {
-        return userRepository.saveAndFlush(user);
     }
 }

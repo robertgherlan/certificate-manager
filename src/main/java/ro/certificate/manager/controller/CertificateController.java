@@ -22,9 +22,6 @@ import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class CertificateController extends BaseController {
 
@@ -93,7 +90,6 @@ public class CertificateController extends BaseController {
     @RequestMapping(value = "/import_certificate", method = RequestMethod.GET)
     public String import_certificate(Model model) {
         model.addAttribute("importCertificate", new ImportCertificate());
-
         return "/import_certificate";
     }
 
@@ -115,7 +111,7 @@ public class CertificateController extends BaseController {
     }
 
     @RequestMapping(value = "/upload_certificate", method = RequestMethod.GET)
-    public String upload_certificate(Model model) {
+    public String upload_certificate() {
         return "/upload_certificate";
     }
 

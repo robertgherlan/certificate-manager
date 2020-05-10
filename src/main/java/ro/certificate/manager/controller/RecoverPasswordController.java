@@ -59,7 +59,7 @@ public class RecoverPasswordController extends BaseController {
 
     @RequestMapping(value = "/recoverPassword", method = RequestMethod.GET)
     public String recoverPasswordPOST(@RequestParam(value = "recoverToken") String recoverToken, @RequestParam(value = "email") String email) {
-        if (recoverToken == null) {
+        if (recoverToken == null || email == null) {
             return "redirect:/login?recover=false";
         }
         try {

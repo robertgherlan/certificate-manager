@@ -318,15 +318,18 @@ public class CertificateUtils {
      */
     private static Date calculateNotAfter(int certificateValidity, String certificateValidityType) {
         Calendar calendar = Calendar.getInstance();
-        if (certificateValidityType.toUpperCase().equals("YEARS")) {
-            calendar.add(Calendar.YEAR, certificateValidity);
-        } else if (certificateValidityType.toUpperCase().equals("MONTHS")) {
-            calendar.add(Calendar.MONTH, certificateValidity);
-        } else if (certificateValidityType.toUpperCase().equals("DAYS")) {
-            calendar.add(Calendar.DAY_OF_MONTH, certificateValidity);
-        } else {
-            // Default value is 1 year.
-            calendar.add(Calendar.YEAR, 1);
+        switch (certificateValidityType.toUpperCase()) {
+            case "YEARS":
+                calendar.add(Calendar.YEAR, certificateValidity);
+                break;
+            case "MONTHS":
+                calendar.add(Calendar.MONTH, certificateValidity);
+                break;
+            case "DAYS":
+                calendar.add(Calendar.DAY_OF_MONTH, certificateValidity);
+                break;
+            default:
+                calendar.add(Calendar.YEAR, 1);
         }
 
         return calendar.getTime();
@@ -740,14 +743,13 @@ public class CertificateUtils {
     }
 
     public boolean verifySignatureByUser(MultipartFile signedDocument, User user) {
-        boolean success = false;
         try {
             List<Document> documents = user.getDocuments();
             if (documents != null && !documents.isEmpty()) {
                 for (Document document : documents) {
                     try {
                         File documentFile = folderUtils.getDocumentFile(user.getId(), document.getPath());
-                        success = IOUtils.contentEquals(new BufferedInputStream(new FileInputStream(documentFile)), signedDocument.getInputStream());
+                        boolean success = IOUtils.contentEquals(new BufferedInputStream(new FileInputStream(documentFile)), signedDocument.getInputStream());
                         if (success) {
                             break;
                         }
@@ -760,6 +762,6 @@ public class CertificateUtils {
             // Do nothing.
         }
 
-        return success;
+        return false;
     }
 }
