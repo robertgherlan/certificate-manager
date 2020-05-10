@@ -15,7 +15,7 @@ public class ConfigurationUtils {
     @Value("${userFiles.folder}")
     private String userFilesFolder;
 
-    @Value("use.secure.random")
+    @Value("${use.secure.random}")
     private final String useSecureRandom = "false";
 
     @Value("${captcha.siteKey}")
@@ -24,26 +24,11 @@ public class ConfigurationUtils {
     @Value("${captcha.secretKey}")
     private String captchaSecretKey;
 
-    @Value("${file.maxUploadSize}")
-    private Long maxUploadSize;
-
     @Value("${email.username}")
     private String email;
 
     @Value("${site.homeURL}")
     private String siteHomeURL;
-
-    @Value("${contact.email}")
-    private String contactEmail;
-
-    @Value("${email.title}")
-    private String emailTitle;
-
-    @Value("${attempts.maxAttempts}")
-    private Integer maxAttempts;
-
-    @Value("${attempts.interval}")
-    private Integer attemptsInterval;
 
     public String getCaptchaSiteKey() {
         return captchaSiteKey;
@@ -53,24 +38,12 @@ public class ConfigurationUtils {
         return captchaSecretKey;
     }
 
-    public Long getMaxUploadSize() {
-        return maxUploadSize;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public String getSiteHomeURL() {
         return siteHomeURL;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public String getEmailTitle() {
-        return emailTitle;
     }
 
     public String getUserFilesFolder() {
@@ -83,14 +56,6 @@ public class ConfigurationUtils {
 
     public String getKeyStoreEncryptionKey() {
         return keyStoreEncryptionKey;
-    }
-
-    public Integer getMaxAttempts() {
-        return maxAttempts;
-    }
-
-    public Integer getAttemptsInterval() {
-        return attemptsInterval;
     }
 
     public String getPrivateKeyEncryptionKey() {
