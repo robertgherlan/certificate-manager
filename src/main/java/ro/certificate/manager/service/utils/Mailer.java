@@ -1,6 +1,6 @@
 package ro.certificate.manager.service.utils;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -15,10 +15,9 @@ import javax.mail.internet.MimeMessage;
 import java.io.StringWriter;
 import java.util.HashMap;
 
+@Log4j2
 @Service
 public class Mailer {
-
-    private static final Logger logger = Logger.getLogger(Mailer.class);
 
     @Autowired
     private JavaMailSenderImpl mailSender;
@@ -46,7 +45,7 @@ public class Mailer {
             helper.setSubject(mail.getMailSubject());
             helper.setText(stringWriter.toString(), true);
         } catch (MessagingException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             e.printStackTrace();
         }
 

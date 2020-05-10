@@ -1,6 +1,6 @@
 package ro.certificate.manager.controller;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,9 @@ import ro.certificate.manager.utils.StringGeneratorUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
+@Log4j2
 @Controller
 public class RecoverPasswordController extends BaseController {
-
-    private static final Logger logger = Logger.getLogger(RecoverPasswordController.class);
 
     @RequestMapping(value = "/recover", method = RequestMethod.GET)
     public String recoverGET(Model model) {
@@ -43,7 +42,7 @@ public class RecoverPasswordController extends BaseController {
                 model.addAttribute("userNotFound", true);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e);
             if (e instanceof ReCaptchaInvalidException) {
                 model.addAttribute("invalidCaptcha", true);
             }
@@ -68,7 +67,7 @@ public class RecoverPasswordController extends BaseController {
                 return "/recoverPassword";
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e);
         }
 
         return "redirect:/login?recover=false";
@@ -94,7 +93,7 @@ public class RecoverPasswordController extends BaseController {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e);
         }
         return "redirect:/recoverPassword?error=true&recoverToken=" + recoverToken;
     }

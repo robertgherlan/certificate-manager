@@ -1,6 +1,7 @@
 package ro.certificate.manager.service;
 
-import org.apache.log4j.Logger;
+
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,11 +29,10 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
+@Log4j2
 @Service
 @Transactional
 public class DocumentService {
-
-    private static final Logger logger = Logger.getLogger(DocumentService.class);
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -73,7 +73,7 @@ public class DocumentService {
             PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
             return documentRepository.findByUser(pageRequest, user);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
         }
 
         return null;
@@ -85,7 +85,7 @@ public class DocumentService {
             PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
             return documentRepository.findByUserAndNameIgnoreCaseContaining(pageRequest, user, query);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
         }
 
         return null;
@@ -96,7 +96,7 @@ public class DocumentService {
             PageRequest pageRequest = PaginationUtils.getPageRequest(pageNumber, perPage, sortDirection, sortBy);
             return documentRepository.findByNameIgnoreCaseContaining(pageRequest, query);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
         }
 
         return null;

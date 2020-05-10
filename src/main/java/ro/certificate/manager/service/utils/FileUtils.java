@@ -1,7 +1,7 @@
 package ro.certificate.manager.service.utils;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import ro.certificate.manager.exceptions.FileAlreadyExistException;
 import ro.certificate.manager.exceptions.InternalServerError;
 import ro.certificate.manager.utils.ErrorMessageBundle;
@@ -11,9 +11,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+@Log4j2
 public class FileUtils {
-
-    private static final Logger logger = Logger.getLogger(FileUtils.class);
 
     private FileUtils() {
     }
@@ -36,7 +35,7 @@ public class FileUtils {
             IOUtils.copy(inputStream, response.getOutputStream());
             response.flushBuffer();
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             throw new InternalServerError(e.getMessage());
         } finally {
             try {

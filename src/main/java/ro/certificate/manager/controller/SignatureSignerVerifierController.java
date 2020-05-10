@@ -1,6 +1,6 @@
 package ro.certificate.manager.controller;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +15,9 @@ import ro.certificate.manager.utils.ErrorMessageBundle;
 import java.security.Principal;
 import java.util.List;
 
+@Log4j2
 @Controller
 public class SignatureSignerVerifierController extends BaseController {
-
-    private static final Logger logger = Logger.getLogger(SignatureSignerVerifierController.class);
 
     @RequestMapping(value = "/sign_document", method = RequestMethod.GET)
     public String sign_document(Model model, Principal principal) {
@@ -67,7 +66,7 @@ public class SignatureSignerVerifierController extends BaseController {
                     redirectAttributes.addFlashAttribute("user", user);
                 }
             } catch (Exception e) {
-                logger.error(e);
+                log.error(e);
                 redirectAttributes.addFlashAttribute("error", e.getMessage());
             }
         }

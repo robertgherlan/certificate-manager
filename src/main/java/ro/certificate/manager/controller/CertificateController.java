@@ -1,6 +1,6 @@
 package ro.certificate.manager.controller;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,10 +22,9 @@ import java.io.InputStream;
 import java.security.Principal;
 import java.util.List;
 
+@Log4j2
 @Controller
 public class CertificateController extends BaseController {
-
-    private static final Logger logger = Logger.getLogger(CertificateController.class);
 
     @RequestMapping(value = "/certificates", method = RequestMethod.GET)
     public String certificates(Model model, Principal principal, @RequestParam(value = "query", required = false) String query) {
@@ -44,7 +43,7 @@ public class CertificateController extends BaseController {
                 model.addAttribute("found", false);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             model.addAttribute("error", ErrorMessageBundle.CANNOT_PROCESS_REQUEST + e.getMessage());
         }
         return "/certificates";
@@ -67,7 +66,7 @@ public class CertificateController extends BaseController {
             certificateGeneratorUtils.generateCertificate(certificate, user);
             model.addAttribute("success", true);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             model.addAttribute("error", ErrorMessageBundle.CANNOT_PROCESS_REQUEST + e.getMessage());
         }
         return "/generate_certificate";
@@ -81,7 +80,7 @@ public class CertificateController extends BaseController {
             certificateGeneratorUtils.deleteCertificate(user, id);
             deleted = true;
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
         }
         model.addAttribute("deleted", deleted);
         return "redirect:" + certificates(model, principal, null);
@@ -103,7 +102,7 @@ public class CertificateController extends BaseController {
             certificateGeneratorUtils.importCertificate(user, importCertificate.getCertificate(), importCertificate.getPrivateKey(), null, null);
             model.addAttribute("success", true);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             model.addAttribute("error", ErrorMessageBundle.CANNOT_PROCESS_REQUEST + e.getMessage());
         }
 
@@ -122,7 +121,7 @@ public class CertificateController extends BaseController {
             certificateGeneratorUtils.uploadCertificate(certificate, privateKey, user);
             redirectAttributes.addFlashAttribute("success", true);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             redirectAttributes.addFlashAttribute("error", ErrorMessageBundle.CANNOT_PROCESS_REQUEST + e.getMessage());
         }
 
@@ -146,7 +145,7 @@ public class CertificateController extends BaseController {
             }
 
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             model.addAttribute("error", ErrorMessageBundle.CANNOT_PROCESS_REQUEST + e.getMessage());
         }
 
@@ -163,7 +162,7 @@ public class CertificateController extends BaseController {
                 FileUtils.downloadFile(response, inputStream, foundKeystore.getCertificateSubject() + ".csr");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             throw new InternalServerError(e.getMessage());
         }
     }
@@ -178,7 +177,7 @@ public class CertificateController extends BaseController {
                 FileUtils.downloadFile(response, inputStream, foundKeystore.getCertificateSubject() + ".key");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             throw new InternalServerError(e.getMessage());
         }
     }
@@ -193,7 +192,7 @@ public class CertificateController extends BaseController {
                 FileUtils.downloadFile(response, inputStream, foundKeystore.getCertificateSubject() + ".cer");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             throw new InternalServerError(e.getMessage());
         }
     }

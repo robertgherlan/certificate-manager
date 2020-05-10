@@ -1,7 +1,7 @@
 package ro.certificate.manager.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,10 +24,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+@Log4j2
 @Controller
 public class RegisterController extends BaseController {
-
-    private static final Logger logger = Logger.getLogger(RegisterController.class);
 
     private static final String REGISTER_PAGE = "/register";
 
@@ -78,7 +77,7 @@ public class RegisterController extends BaseController {
             emailUtils.sendEmail(configurationUtils.getEmail(), user.getEmail(), "Validate account", "mailValidateAccount.vm", velocityContext);
             success = true;
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e);
             if (e instanceof ReCaptchaInvalidException) {
                 model.addAttribute("invalidCaptcha", true);
             }
