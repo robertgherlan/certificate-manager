@@ -5,13 +5,13 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 import ro.certificate.manager.annotation.UniqueEmail;
 import ro.certificate.manager.annotation.UniqueUsername;
 import ro.certificate.manager.utils.ErrorMessageBundle;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -32,26 +32,21 @@ public class User implements Serializable {
     private String id;
 
     @UniqueUsername(message = ErrorMessageBundle.USERNAME_ALREADY_EXIST)
-    @NotNull(message = ErrorMessageBundle.INVALID_FIELD)
     @NotEmpty(message = ErrorMessageBundle.INVALID_FIELD)
     private String username;
 
     @UniqueEmail(message = ErrorMessageBundle.EMAIL_ALREADY_EXIST)
     @Email(message = ErrorMessageBundle.INVALID_FIELD)
-    @NotNull(message = ErrorMessageBundle.INVALID_FIELD)
     @NotEmpty(message = ErrorMessageBundle.INVALID_FIELD)
     private String email;
 
-    @NotNull(message = ErrorMessageBundle.INVALID_FIELD)
     @NotEmpty(message = ErrorMessageBundle.INVALID_FIELD)
     private String firstname;
 
-    @NotNull(message = ErrorMessageBundle.INVALID_FIELD)
     @NotEmpty(message = ErrorMessageBundle.INVALID_FIELD)
     private String lastname;
 
     @JsonIgnore
-    @NotNull(message = ErrorMessageBundle.INVALID_FIELD)
     @NotEmpty(message = ErrorMessageBundle.INVALID_FIELD)
     @Size(min = 8, max = 256, message = "Password must have between 8 and 256 characters.")
     private String password;

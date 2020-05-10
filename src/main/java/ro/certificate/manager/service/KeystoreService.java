@@ -1,5 +1,6 @@
 package ro.certificate.manager.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,14 @@ import ro.certificate.manager.service.utils.ValidationUtils;
 import ro.certificate.manager.utils.ErrorMessageBundle;
 
 import java.util.List;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class KeystoreService {
 
-    @Autowired
-    private KeystoreRepository keystoreRepository;
+    private final KeystoreRepository keystoreRepository;
 
     public Keystore save(Keystore keystore) {
         return keystoreRepository.saveAndFlush(keystore);
@@ -45,12 +47,8 @@ public class KeystoreService {
 
     public Keystore findById(String id) {
         if (ValidationUtils.validateUUID(id)) {
-            Keystore keystore = keystoreRepository.findOne(id);
-            if (keystore == null) {
-                throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
-            }
-
-            return keystore;
+            Optional<Keystore> keystore = keystoreRepository.findById(id);
+            return keystore.orElseThrow(() -> new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND));
         }
         throw new NotFoundException(ErrorMessageBundle.CERTIFICATE_NOT_FOUND);
     }

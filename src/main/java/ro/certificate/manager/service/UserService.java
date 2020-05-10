@@ -79,7 +79,7 @@ public class UserService {
 
     public void deleteById(String id) {
         if (ValidationUtils.validateUUID(id)) {
-            userRepository.delete(id);
+            userRepository.deleteById(id);
         }
     }
 

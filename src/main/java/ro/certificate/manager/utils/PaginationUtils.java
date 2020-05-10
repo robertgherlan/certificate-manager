@@ -26,11 +26,11 @@ public class PaginationUtils {
             sortBy = "ID";
         }
         if ("ASC".equalsIgnoreCase(sortDirection)) {
-            sort = new Sort(Direction.ASC, sortBy);
+            sort = Sort.by(Direction.ASC, sortBy);
         } else if ("DESC".equalsIgnoreCase(sortDirection)) {
-            sort = new Sort(Direction.DESC, sortBy);
+            sort = Sort.by(Direction.DESC, sortBy);
         }
 
-        return new PageRequest(pageNumber, perPage, sort);
+        return PageRequest.of(pageNumber, perPage, sort);
     }
 }
