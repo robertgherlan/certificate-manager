@@ -1,8 +1,8 @@
 package ro.certificate.manager.wrapper;
 
-import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Min;
 
 public class Certificate {
 

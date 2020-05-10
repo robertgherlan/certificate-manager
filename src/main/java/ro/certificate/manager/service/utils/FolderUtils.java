@@ -1,26 +1,22 @@
 package ro.certificate.manager.service.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import ro.certificate.manager.utils.ConfigurationUtils;
 import ro.certificate.manager.utils.ErrorMessageBundle;
 import ro.certificate.manager.utils.ExtensionsUtils;
 import ro.certificate.manager.utils.StringGeneratorUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 @Component
 public class FolderUtils {
 
 	@Autowired
 	private ConfigurationUtils configurationUtils;
-
-	@Autowired
-	private StringGeneratorUtils stringGeneratorUtils;
 
 	@Autowired
 	private ExtensionsUtils extensionsUtils;
@@ -121,7 +117,7 @@ public class FolderUtils {
 		}
 
 		fileName = getFileNameForWindows(fileName);
-		return fileName + "_" + System.currentTimeMillis() + "_" + stringGeneratorUtils.generateRandomFileName();
+		return fileName + "_" + System.currentTimeMillis() + "_" + StringGeneratorUtils.generateRandomFileName();
 	}
 
 	public File createDocumentFile(MultipartFile documentToSign, String userID) throws Exception {

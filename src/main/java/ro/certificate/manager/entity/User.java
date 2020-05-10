@@ -1,33 +1,21 @@
 package ro.certificate.manager.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import ro.certificate.manager.annotation.UniqueEmail;
 import ro.certificate.manager.annotation.UniqueUsername;
 import ro.certificate.manager.utils.ErrorMessageBundle;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
@@ -74,7 +62,7 @@ public class User implements Serializable {
 
 	@JsonIgnore
 	@Column(unique = true)
-	private String recoverPaswordToken;
+	private String recoverPasswordToken;
 
 	@JsonIgnore
 	private Date creationDate;
@@ -155,12 +143,12 @@ public class User implements Serializable {
 		this.registerToken = registerToken;
 	}
 
-	public String getRecoverPaswordToken() {
-		return recoverPaswordToken;
+	public String getRecoverPasswordToken() {
+		return recoverPasswordToken;
 	}
 
-	public void setRecoverPaswordToken(String recoverPaswordToken) {
-		this.recoverPaswordToken = recoverPaswordToken;
+	public void setRecoverPasswordToken(String recoverPaswordToken) {
+		this.recoverPasswordToken = recoverPaswordToken;
 	}
 
 	public List<Role> getRoles() {

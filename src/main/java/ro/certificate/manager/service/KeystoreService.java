@@ -1,18 +1,17 @@
 package ro.certificate.manager.service;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import ro.certificate.manager.entity.Keystore;
 import ro.certificate.manager.entity.User;
 import ro.certificate.manager.repository.KeystoreRepository;
 import ro.certificate.manager.service.utils.ValidationUtils;
 import ro.certificate.manager.utils.ErrorMessageBundle;
+
+
+import java.util.List;
 
 @Service
 @Transactional

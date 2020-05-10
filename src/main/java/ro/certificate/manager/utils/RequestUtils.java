@@ -1,8 +1,8 @@
 package ro.certificate.manager.utils;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class RequestUtils {
@@ -20,9 +20,9 @@ public class RequestUtils {
 		String remoteAddr = "";
 		if (request != null) {
 			remoteAddr = request.getHeader("X-Forwarded-For");
-			if (remoteAddr == null || remoteAddr.trim().length() == 0) {
+			if (remoteAddr == null || remoteAddr.trim().isEmpty()) {
 				remoteAddr = request.getRemoteAddr();
-				if (remoteAddr == null || remoteAddr.trim().length() == 0) {
+				if (remoteAddr == null || remoteAddr.trim().isEmpty()) {
 					remoteAddr = "Unknown";
 				}
 			}

@@ -1,26 +1,26 @@
 package ro.certificate.manager.controller;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import ro.certificate.manager.entity.Role;
+import ro.certificate.manager.entity.User;
+import ro.certificate.manager.utils.StringGeneratorUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import ro.certificate.manager.entity.Role;
-import ro.certificate.manager.entity.User;
-
 @Controller
 public class InitController extends BaseController {
 
 	private void initDatabase() {
-		List<Role> userRoles = new ArrayList<Role>();
+		List<Role> userRoles = new ArrayList<>();
 		userRoles.add(roleService.findUserRole());
 
-		List<Role> adminRoles = new ArrayList<Role>();
+		List<Role> adminRoles = new ArrayList<>();
 		adminRoles.add(roleService.findUserRole());
 		adminRoles.add(roleService.findAdminRole());
 
@@ -35,10 +35,10 @@ public class InitController extends BaseController {
 			user.setRoles(userRoles);
 			user.setPassword(new BCryptPasswordEncoder().encode("user" + i));
 			user.setUsername("user" + i);
-			user.setFirstname(stringGeneratorUtils.getUsernameString());
-			user.setLastname(stringGeneratorUtils.getUsernameString());
-			user.setRecoverPaswordToken(stringGeneratorUtils.getRandomString());
-			user.setRegisterToken(stringGeneratorUtils.getRandomString());
+			user.setFirstname(StringGeneratorUtils.getUsernameString());
+			user.setLastname(StringGeneratorUtils.getUsernameString());
+			user.setRecoverPasswordToken(StringGeneratorUtils.getRandomString());
+			user.setRegisterToken(StringGeneratorUtils.getRandomString());
 			userService.saveAndFlush(user);
 		}
 
@@ -53,10 +53,10 @@ public class InitController extends BaseController {
 			user.setRoles(adminRoles);
 			user.setPassword(new BCryptPasswordEncoder().encode("admin" + i));
 			user.setUsername("admin" + i);
-			user.setRecoverPaswordToken(stringGeneratorUtils.getRandomString());
-			user.setRegisterToken(stringGeneratorUtils.getRandomString());
-			user.setFirstname(stringGeneratorUtils.getUsernameString());
-			user.setLastname(stringGeneratorUtils.getUsernameString());
+			user.setRecoverPasswordToken(StringGeneratorUtils.getRandomString());
+			user.setRegisterToken(StringGeneratorUtils.getRandomString());
+			user.setFirstname(StringGeneratorUtils.getUsernameString());
+			user.setLastname(StringGeneratorUtils.getUsernameString());
 			userService.saveAndFlush(user);
 		}
 	}
